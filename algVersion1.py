@@ -1,9 +1,86 @@
 import json
+import copy
+
+base_schema = [
+    {
+        "title":"name",
+        "value":""
+    },
+    {
+        "title":"desc",
+        "value":""
+    },
+    {
+        "title":"webiste",
+        "value":""
+    },
+    {
+        "title":"email",
+        "value":""
+    },
+    {
+        "keyMetrics":[
+            {
+                "title":"website",
+                "value":""
+            },
+            {
+                "title":"Last Funding Round",
+                "value":""
+            },
+            {
+                "title":"Annual Revenue",
+                "value":""
+            }
+        ]
+    },
+    {
+        "Portfolio":[
+            [
+                {
+                    "title":"imgurl",
+                    "url":""
+                },
+                {
+                    "title":"SL no.",
+                    "value":""
+                },
+                {
+                    "title":"Location",
+                    "value":""
+                },
+                {
+                    "title":"Year",
+                    "value":""
+                },
+                {
+                    "title":"Funding",
+                    "value":""
+                },
+                {
+                    "title":"Company stage",
+                    "value":""
+                },
+                {
+                    "title":"Short description",
+                    "value":""
+                }
+            ]
+        ]
+    }
+]
+
+def schema_updater(name, desc, website):
+    schema = copy.deepcopy(base_schema)
+    schema[0].update({"value":name})
+    schema[1].update({"value":desc})
+    schema[2].update({"value":website})
+
+    return schema
 
 def converter(input_files, result_file):
     # to store the datas of each investor
     final_list = []
-
     # to navigate through each input files
     for input_file in input_files:
         with open(input_file, "r") as file:
@@ -13,44 +90,31 @@ def converter(input_files, result_file):
 
         # to navigate through each investor data
         for data in datas:
+            name = ""
+            description = ""
+            website = ""
 
-            # institutional and private investors can be sepearated by their name format for using different schemes for each
-            # private investors has their name in the form of dict
             if type(data.get("name", None)) is dict:
-                firstName = data.get("name", {}).get("firstName","")
-                middleName = data.get("name", {}).get("middleName","")
-                lastName = data.get("name", {}).get("lastName","")
-                linkedin = data.get("socialProfileList", {}).get("linkedin", "")
-                schema = [
-                    {
-                        "title":"desc",
-                        "value":data.get("description",{}).get("short","")
-                    },
-                    {
-                        "title":"name",
-                        "value":' '.join(filter(None, [firstName, middleName, lastName]))
-                    },
-                    {
-                        "title":"linkedin",
-                        "value":linkedin
-                    }
-                ]
-            # institutional investors have their name as in the form of string
+                first_name = data.get("name", {}).get("firstName", "")
+                middle_name = data.get("name", {}).get("middleName", "")
+                last_name = data.get("name", {}).get("lastName", "")
+                name = ' '.join(filter(None, [first_name, middle_name, last_name]))
+                website = data.get("domain", "")
+                description = data.get("summary", "")
+
+                if len(description) == 0:
+                    description = data.get("description", {}).get("short", "")
+                if len(website) == 0:
+                    website = data.get("socialProfileList", {}).get("linkedin", "")
             else:
-                schema = [
-                    {
-                    "title":"name",
-                    "value":data.get("name", "")
-                    },
-                    {
-                        "title":"desc",
-                        "value":data.get("description",{}).get("short","")
-                    },
-                    {
-                    "title":"website",
-                    "url":data.get("domain","")
-                    }
-                ]
+                name = data.get("name", "")
+                description = data.get("description", {}).get("short", "")
+                website = data.get("domain", "")
+            schema = schema_updater(name, description, website)
+            
+            print(schema)
+            print('\n\n')
+
             final_list.append(schema)
     with open(result_file, "w") as file:
         json.dump(final_list, file)
