@@ -1,13 +1,21 @@
 import json
 
 def converter(input_files, result_file):
+    # to store the datas of each investor
     final_list = []
+
+    # to navigate through each input files
     for input_file in input_files:
         with open(input_file, "r") as file:
             global datas
             datas = json.load(file)
         datas = datas["result"]
+
+        # to navigate through each investor data
         for data in datas:
+
+            # institutional and private investors can be sepearated by their name format for using different schemes for each
+            # private investors has their name in the form of dict
             if type(data.get("name", None)) is dict:
                 firstName = data.get("name", {}).get("firstName","")
                 middleName = data.get("name", {}).get("middleName","")
@@ -27,6 +35,7 @@ def converter(input_files, result_file):
                         "value":linkedin
                     }
                 ]
+            # institutional investors have their name as in the form of string
             else:
                 schema = [
                     {
