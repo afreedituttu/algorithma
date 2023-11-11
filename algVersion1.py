@@ -6,27 +6,48 @@ def converter(input_files, result_file):
         with open(input_file, "r") as file:
             global datas
             datas = json.load(file)
-        converted_list = []
         datas = datas["result"]
         for data in datas:
-            schema = {
-                "title":data.get("name"),
-                "desc":data.get("description",{}).get("short"),
-                "tags":[
+            if type(data.get("name", None)) is dict:
+                firstName = data.get("name", {}).get("firstName","")
+                middleName = data.get("name", {}).get("middleName","")
+                lastName = data.get("name", {}).get("lastName","")
+                linkedin = data.get("socialProfileList", {}).get("linkedin", "")
+                schema = [
                     {
-                        "title":"website",
-                        "url":data.get("domain")
+                        "title":"desc",
+                        "value":data.get("description",{}).get("short","")
+                    },
+                    {
+                        "title":"name",
+                        "value":' '.join(filter(None, [firstName, middleName, lastName]))
+                    },
+                    {
+                        "title":"linkedin",
+                        "value":linkedin
                     }
                 ]
-            }
-            converted_list.append(schema)
-        for data in converted_list:
-            final_list.append(data)
+            else:
+                schema = [
+                    {
+                    "title":"name",
+                    "value":data.get("name", "")
+                    },
+                    {
+                        "title":"desc",
+                        "value":data.get("description",{}).get("short","")
+                    },
+                    {
+                    "title":"website",
+                    "url":data.get("domain","")
+                    }
+                ]
+            final_list.append(schema)
     with open(result_file, "w") as file:
         json.dump(final_list, file)
     return final_list
 
-input_files = [r"C:\Users\afree\Desktop\python\1020.json", r"C:\Users\afree\Desktop\python\1260.json"]
+input_files = [r"C:\Users\afree\Desktop\python\1020.json", r"C:\Users\afree\Desktop\python\1260.json", r"C:\Users\afree\Desktop\python\1080.json"]
 result_file = r"./result.json"
 
 converter(input_files, result_file)    
