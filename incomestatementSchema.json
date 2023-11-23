@@ -1,8 +1,8 @@
 [
     {
         "incomeStatement":{
-            "statementDetails":[
-                {
+            "statementDetails":[ 
+                {                   // [0]
                     "children":[
                         {
                             "particulars":{
@@ -164,7 +164,7 @@
                         }
                     ]
                 },
-                {
+                {                   // [4]
                     "particulars":{
                         "value":"profit before tax"
                     },
@@ -243,7 +243,7 @@
                         }
                     ]
                 },
-                {
+                {                   // [6]
                     "particulars":{
                         "value":"Profit/(Loss) for the year"
                     },
