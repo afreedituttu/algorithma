@@ -47,10 +47,10 @@ for input_file in input_files:
 
                 if board_member.get('boardMemberCategory') == "FOUNDER":
                     result_entry[2].update({"title":"Category","value":board_member.get('boardMemberCategory', '')})
-                    result["FOUNDER"].append(result_entry)
+                    result["TEAM"].append(result_entry)
                 elif board_member.get('boardMemberCategory') == "INDEPENDENT":
                     result_entry[2].update({"title":"Category","value":board_member.get('boardMemberCategory', '')})
-                    result["INDEPENDENT"].append(result_entry)
+                    result["Independent board members"].append(result_entry)
 with open('./boardMembers.json', 'w') as result_file:
     json.dump(result, result_file)
 # Print the result
