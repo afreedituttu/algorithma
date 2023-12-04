@@ -36,6 +36,6 @@ for input_file in input_files:
             recentInvestment.append(schema)
         
 with open(result_file, 'w') as file:
-    json.dump(recentInvestment, file)
+    json.dump({"info":recentInvestment}, file)
 
 print("SUCCESS")
