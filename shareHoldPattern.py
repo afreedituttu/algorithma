@@ -1,10 +1,147 @@
 import json
 
-input_files = ['./streemlight/oxyzo/captables.json']
+input_files = ['./streemlight/grow/captables.json']
 result_file = './shareHoldPatter.json'
 
 result = {
-    "info": [],
+    "info": [
+        [
+            {
+                "title":"Name",
+                "value":""
+            },
+            {
+                "title":"shareholderGroup",
+                "value":"Founder +"
+            },
+            {
+                "title":"Pre round Holding",
+                "value":""
+            },
+            {
+                "title":"Post round Holding",
+                "value":""
+            },
+            {
+                "title":"Increase in Share capital",
+                "value":""
+            },
+            {
+                "title":"Post round cumulative investment",
+                "value":""
+            },
+            {
+                "title":"Cumulative realised Returns",
+                "value":""
+            },
+            {
+                "title":"Shares Bought/Allocated",
+                "value":""
+            }
+        ],
+        [
+            {
+                "title":"Name",
+                "value":""
+            },
+            {
+                "title":"shareholderGroup",
+                "value":"Parent Entity +"
+            },
+            {
+                "title":"Pre round Holding",
+                "value":""
+            },
+            {
+                "title":"Post round Holding",
+                "value":""
+            },
+            {
+                "title":"Increase in Share capital",
+                "value":""
+            },
+            {
+                "title":"Post round cumulative investment",
+                "value":""
+            },
+            {
+                "title":"Cumulative realised Returns",
+                "value":""
+            },
+            {
+                "title":"Shares Bought/Allocated",
+                "value":""
+            }
+        ],
+        [
+            {
+                "title":"Name",
+                "value":""
+            },
+            {
+                "title":"shareholderGroup",
+                "value":"Enterprise +"
+            },
+            {
+                "title":"Pre round Holding",
+                "value":""
+            },
+            {
+                "title":"Post round Holding",
+                "value":""
+            },
+            {
+                "title":"Increase in Share capital",
+                "value":""
+            },
+            {
+                "title":"Post round cumulative investment",
+                "value":""
+            },
+            {
+                "title":"Cumulative realised Returns",
+                "value":""
+            },
+            {
+                "title":"Shares Bought/Allocated",
+                "value":""
+            }
+        ],
+        [
+            {
+                "title":"Name",
+                "value":""
+            },
+            {
+                "title":"shareholderGroup",
+                "value":"Angel +"
+            },
+            {
+                "title":"Pre round Holding",
+                "value":""
+            },
+            {
+                "title":"Post round Holding",
+                "value":""
+            },
+            {
+                "title":"Increase in Share capital",
+                "value":""
+            },
+            {
+                "title":"Post round cumulative investment",
+                "value":""
+            },
+            {
+                "title":"Cumulative realised Returns",
+                "value":""
+            },
+            {
+                "title":"Shares Bought/Allocated",
+                "value":""
+            }
+        ],
+    ],
     "Founder": [],
     "Parent Entity": [],
     "Enterprise" : [],
@@ -19,7 +156,7 @@ for input_file in input_files:
         schema = [
             {
                 "title":"Name",
-                "value":data.get("nameInfo",{}).get("name",{}).get("value","") or data.get("nameInfo",{}).get("legalName",{}).get("value","") or data.get("parentInfo",{}).get("name","")
+                "value":data.get("nameInfo",{}).get("name",{}).get("value","") or data.get("nameInfo",{}).get("legalName",{}).get("value","") or data.get("parentInfo",{}).get("name","") or data.get("nameInfo",{}).get("companyName",{})
             },
             {
                 "title":"shareholderGroup",
@@ -27,15 +164,15 @@ for input_file in input_files:
             },
             {
                 "title":"Pre round Holding",
-                "value":data.get("preRoundHolding","")
+                "value":data.get("preRoundHolding",{}).get("value","")
             },
             {
                 "title":"Post round Holding",
-                "value":data.get("postRoundHolding","")
+                "value":data.get("postRoundHolding",{}).get("value","")
             },
             {
                 "title":"Increase in Share capital",
-                "value":data.get("currentRoundInvestment",{}).get("value",{}).get("amount",{}).get("amount","")
+                "value":data.get("currentRoundInvestment",{}).get("value",{}).get("amount",{}).get("amount","") or data.get("increaseInShareCapital",{}).get("value",{}).get("amount",{}).get("amount","")
             },
             {
                 "title":"Post round cumulative investment",
@@ -43,11 +180,11 @@ for input_file in input_files:
             },
             {
                 "title":"Cumulative realised Returns",
-                "value":data.get("unrealisedReturn",{}).get("value",{}).get("amount",{}).get("amount","")
+                "value":data.get("unrealisedReturn",{}).get("value",{}).get("amount",{}).get("amount","") or data.get("cumulativeRealisedReturn",{}).get("value",{}).get("amount",{}).get("amount","")
             },
             {
                 "title":"Shares Bought/Allocated",
-                "value":data.get("shareBoughtOrAllocated","")
+                "value":data.get("shareBoughtOrAllocated",{}).get("value","")
             }
         ]
 
@@ -56,19 +193,13 @@ for input_file in input_files:
         elif data.get("shareholderGroup","") == 'Parent Entity':
             result['Parent Entity'].append(schema)
         elif data.get("shareholderGroup","") == 'Enterprise':
-            result['Parent Entity'].append(schema)
+            result['Enterprise'].append(schema)
         elif data.get("shareholderGroup","") == 'Angel':
-            result['Parent Entity'].append(schema)
+            result['Angel'].append(schema)
         elif data.get("shareholderGroup","") == 'Total':
-            result['Parent Entity'].append(schema)
+            result['Total'].append(schema)
         else:
             pass
-
-        schema[1].update({
-                "title":"shareholderGroup",
-                "value":data.get("shareholderGroup","") + ' +'
-            })
-        result["info"].append(schema)
 
 with open(result_file, 'w') as file:
     json.dump(result, file)
