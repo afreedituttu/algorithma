@@ -17,7 +17,26 @@ input_files = ['./streemlight/oxyzo/people_0.json']  # Replace with the actual f
 
 # Initialize the result dictionary
 result = {
-    "info": [],
+    "info": [
+                [
+                    {"title": "id", "value": ""},
+                    {"title": "Name", "value": ""},
+                    {"title": "Category", "value": "TEAM +"},
+                    {"title": "boardMemberType", "value":""},
+                    {"title": "status", "value": ""},
+                    {"title": "appointmentDate", "value": ""},
+                    {"title": "Cessation date", "value": ""},
+                ],
+                [
+                    {"title": "id", "value": ""},
+                    {"title": "Name", "value": ""},
+                    {"title": "Category", "value": ""},
+                    {"title": "boardMemberType", "value":"Independent board members +"},
+                    {"title": "status", "value": ""},
+                    {"title": "appointmentDate", "value": ""},
+                    {"title": "Cessation date", "value": ""},
+                ]
+            ],
     "TEAM": [],
     "Independent board members": []
 }
@@ -43,7 +62,6 @@ for input_file in input_files:
                     {"title": "Cessation date", "value": format_date(board_member_info.get('cessationDate', {}))}
                 ]
                 
-                result["info"].append(result_entry)
 
                 if board_member.get('boardMemberCategory') == "FOUNDER":
                     result_entry[2].update({"title":"Category","value":board_member.get('boardMemberCategory', '')})
