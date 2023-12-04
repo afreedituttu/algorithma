@@ -34,6 +34,6 @@ for input_file in input_files:
         keymatrices.append(schema)
 
 with open(result_file, 'w') as file:
-    json.dump(keymatrices, file)
+    json.dump({"keyMetrics":keymatrices}, file)
 
 print(f'DONE, RESULT STORED TO FILE - {result_file}')
