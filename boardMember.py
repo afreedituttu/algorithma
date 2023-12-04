@@ -13,11 +13,30 @@ def format_date(date_dict):
         return f"{date}-{month}-{year}"
 
 # Read data from file
-input_files = ['./streemlight/grow/people_0.json']  # Replace with the actual file path
+input_files = ['./streemlight/oxyzo/people_0.json']  # Replace with the actual file path
 
 # Initialize the result dictionary
 result = {
-    "info": [],
+    "info": [
+        [
+            {"title": "id", "value": ""},
+            {"title": "Name", "value": ""},
+            {"title": "Category", "value": "FOUNDER"},
+            {"title": "boardMemberType", "value": ""},
+            {"title": "status", "value": ""},
+            {"title": "appointmentDate", "value": ""},
+            {"title": "Cessation date", "value": ""}
+        ],
+        [
+            {"title": "id", "value": ""},
+            {"title": "Name", "value": ""},
+            {"title": "Category", "value": "INDEPENDENT"},
+            {"title": "boardMemberType", "value": ""},
+            {"title": "status", "value": ""},
+            {"title": "appointmentDate", "value": ""},
+            {"title": "Cessation date", "value": ""}
+        ]
+    ],
     "FOUNDER": [],
     "INDEPENDENT": []
 }
@@ -42,8 +61,6 @@ for input_file in input_files:
                     {"title": "appointmentDate", "value": format_date(board_member_info.get('appointmentDate', {}))},
                     {"title": "Cessation date", "value": format_date(board_member_info.get('cessationDate', {}))}
                 ]
-                
-                result["info"].append(result_entry)
 
                 if board_member.get('boardMemberCategory') == "FOUNDER":
                     result_entry[2].update({"title":"Category","value":board_member.get('boardMemberCategory', '')})
